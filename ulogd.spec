@@ -1,6 +1,6 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Name:		ulogd
-Version:	0.91
+Version:	0.95
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
