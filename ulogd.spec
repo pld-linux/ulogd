@@ -11,6 +11,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Source4:	%{name}.conf
+Patch0:		%{name}-includes.patch
 URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
@@ -51,6 +52,7 @@ Wtyczka MySQL dla ulogd.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__autoconf}
@@ -100,13 +102,14 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc Changes doc/*.{ps,txt,html}
-%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/ulogd
-%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) %{_sysconfdir}/ulogd.conf
-%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/logrotate.d/ulogd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ulogd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ulogd.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/ulogd
 %attr(754,root,root) /etc/rc.d/init.d/ulogd
 
 %attr(755,root,root) %{_sbindir}/*
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_[BLOP]*.so
+%dir %{_libdir}/ulogd
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_[BLOPS]*.so
 
 %attr(640,root,root) %ghost /var/log/*
 
