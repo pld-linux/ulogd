@@ -1,20 +1,19 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl):	Demon loguj±cy w trybie u¿ytkownika dla iptables
 Name:		ulogd
-Version:	0.95
-Release:	2
+Version:	0.97
+Release:	0.1
 License:	GPL
 Group:		Networking/Daemons
-Source0:	ftp://ftp.sunbeam.franken.de/pub/netfilter/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Source4:	%{name}.conf
+URL:		http://www.gnumonks.org/projects/ulogd
 Patch0:		%{name}-DESTDIR.patch
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
-BuildRequires:	sgml-tools
-BuildRequires:	sgmls
 #Requires:	kernel >= 2.4.0test9
 Requires:	iptables
 Prereq:		/sbin/chkconfig
@@ -53,7 +52,7 @@ Wtyczka MySQL dla ulogd.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 
 %build
 %{__autoconf}
@@ -73,7 +72,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
 install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}
 
-gzip -9nf Changes doc/*.{ps,txt,table}
 
 touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
 
@@ -103,7 +101,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc Changes.gz doc/*.{ps,txt}.gz
+%doc Changes doc/*.{ps,txt,html}
 %attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/ulogd
 %attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) %{_sysconfdir}/ulogd.conf
 %attr(640,root,root) /etc/logrotate.d/ulogd
