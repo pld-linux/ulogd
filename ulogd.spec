@@ -75,10 +75,21 @@ if [ ! -f /var/log/ulogd ]; then
 	touch /var/log/ulogd{,.pktlog}
 	chmod 640 /var/log/ulogd{,.pktlog}
 fi
-DESC="ulogd daemon"; %chkconfig_add
+
+/sbin/chkconfig --add ulogd
+if [ -f /var/lock/subsys/ulogd ]; then
+	/etc/rc.d/init.d/ulogd restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/ulogd start\" to start ulogd daemon." 1>&2
+fi
 
 %preun
-%chkconfig_del
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/ulogd ]; then
+		/etc/rc.d/init.d/ulogd stop 1>&2
+	fi
+	/sbin/chkconfig --del ulogd
+fi
 
 %files
 %defattr(644,root,root,755)
