@@ -1,8 +1,8 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl):	Demon loguj±cy w trybie u¿ytkownika dla iptables
 Name:		ulogd
-Version:	0.97
-Release:	0.1
+Version:	0.98
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.gz
@@ -13,9 +13,10 @@ Source4:	%{name}.conf
 URL:		http://www.gnumonks.org/projects/ulogd
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
+Requires(post,preun):	/sbin/chkconfig
+Requires(post):	fileutils
 #Requires:	kernel >= 2.4.0test9
 Requires:	iptables
-Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc
