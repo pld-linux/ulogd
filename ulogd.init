@@ -32,14 +32,14 @@ case "$1" in
 		msg_already_running ulogd
 	fi
 	;;
-  stop)	
+  stop)
 	if [ -f /var/lock/subsys/ulogd ]; then
 		msg_stopping ulogd
 		killproc ulogd
 		rm -f /var/lock/subsys/ulogd >/dev/null 2>&1
 	else
 		msg_not_running ulogd
-	fi	
+	fi
 	;;
   status)
 	status ulogd
