@@ -5,8 +5,6 @@ Version:	0.95
 Release:	2
 License:	GPL
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
 Source0:	ftp://ftp.sunbeam.franken.de/pub/netfilter/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
@@ -43,8 +41,6 @@ u¿ytkownika w celu logowania. Powinien dzia³aæ tak:
 Summary:	MySQL plugin for ulogd
 Summary(pl):	Wtyczka MySQL dla ulogd
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
 Requires:	mysql
 Obsoletes:	iptables-ulogd-mysql
 
