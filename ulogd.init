@@ -28,7 +28,7 @@ case "$1" in
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ulogd
 	else
-		msg_Already_Running "ulogd"
+		msg_already_running "ulogd"
 	fi
 	;;
     stop)	
@@ -37,7 +37,7 @@ case "$1" in
 		killproc ulogd
 		rm -f /var/lock/subsys/ulogd >/dev/null 2>&1
 	else
-		msg_Not_Running ulogd
+		msg_not_running ulogd
 		exit 1
 	fi	
 	;;
@@ -55,7 +55,7 @@ case "$1" in
 		$0 start
 #		killproc ulogd -HUP
 	else
-		msg_Not_Running ulogd
+		msg_not_running ulogd
 		exit 1
 	fi
 	;;
@@ -68,7 +68,7 @@ case "$1" in
 	exit $?
 	;;
   *)
-	msg_Usage "$0 {start|stop|status|restart|reload|force-reload}"
+	msg_usage "$0 {start|stop|status|restart|reload|force-reload}"
 	exit 1
 esac
 
