@@ -1,4 +1,5 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
+Summary(pl):	Demon loguj±cy w trybie u¿ytkownika dla iptables
 Name:		ulogd
 Version:	0.95
 Release:	2
@@ -25,14 +26,22 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 This packages is intended for passing packets from the kernel to
 userspace to do some logging there. It should work like that:
-
-- Register a target called ULOG with netfilter
+- register a target called ULOG with netfilter
 - if the target is hit:
- - send the packet out using netlink multicast facility
- - return NF_ACCEPT immediately
+  - send the packet out using netlink multicast facility
+  - return NF_ACCEPT immediately.
+
+%description -l pl
+Ten pakiet ma s³u¿yæ do wysy³ania pakietów z j±dra do przestrzeni
+u¿ytkownika w celu logowania. Powinien dzia³aæ tak:
+- zarejestrowaæ w netfilterze cel o nazwie ULOG
+- je¿eli cel zosta³ osi±gniêty:
+  - wys³aæ pakiet poprzez netlink
+  - zwróciæ natychmiast NF_ACCEPT.
 
 %package mysql
-Summary:	Mysql plugin for ulogd
+Summary:	MySQL plugin for ulogd
+Summary(pl):	Wtyczka MySQL dla ulogd
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
@@ -40,7 +49,10 @@ Requires:	mysql
 Obsoletes:	iptables-ulogd-mysql
 
 %description mysql
-mysql plugin for ulogd
+MySQL plugin for ulogd.
+
+%description mysql -l pl
+Wtyczka MySQL dla ulogd.
 
 %prep
 %setup -q
@@ -61,7 +73,7 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d}}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
-install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/
+install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}
 
 gzip -9nf Changes doc/*.{ps,txt,table}
 
