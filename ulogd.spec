@@ -14,13 +14,12 @@ Source4:	%{name}.conf
 URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
+PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires(post):	fileutils
 #Requires:	kernel >= 2.4.0test9
 Requires:	iptables
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_sysconfdir	/etc
 
 %description
 This packages is intended for passing packets from the kernel to
@@ -65,13 +64,13 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d}} \
 	$RPM_BUILD_ROOT/var/log
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
 install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}
-
 
 touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
 
