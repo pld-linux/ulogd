@@ -11,7 +11,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Source4:	%{name}.conf
-URL:		http://www.gnumonks.org/projects/ulogd
+URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
 Requires(post,preun):	/sbin/chkconfig
