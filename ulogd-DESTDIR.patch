@@ -1,0 +1,36 @@
+diff -ur ulogd-0.91.orig/Makefile.in ulogd-0.91/Makefile.in
+--- ulogd-0.91.orig/Makefile.in	Mon Nov 20 20:36:25 2000
++++ ulogd-0.91/Makefile.in	Wed Jan 31 00:38:06 2001
+@@ -31,8 +31,8 @@
+ 
+ install: all
+ 	@for d in $(SUBDIRS); do if ! make -C $$d $@; then exit 1; fi; done
+-	@INSTALL@ -m 755 ulogd @sbindir@/ulogd
+-	@INSTALL@ -m 600 ulogd.conf @sysconfdir@/ulogd.conf
++	@INSTALL@ -m 755 ulogd $(DESTDIR)@sbindir@/ulogd
++	@INSTALL@ -m 600 ulogd.conf $(DESTDIR)@sysconfdir@/ulogd.conf
+ 	
+ doc:
+ 	$(MAKE) -C $@
+diff -ur ulogd-0.91.orig/extensions/Makefile.in ulogd-0.91/extensions/Makefile.in
+--- ulogd-0.91.orig/extensions/Makefile.in	Mon Nov 20 20:47:53 2000
++++ ulogd-0.91/extensions/Makefile.in	Wed Jan 31 00:38:32 2001
+@@ -24,5 +24,5 @@
+ 	rm -f Makefile
+ 
+ install: all
+-	@INSTALL@ -m 755 -d $(ULOGD_LIB_PATH)
+-	@INSTALL@ -m 755 *.so $(ULOGD_LIB_PATH)
++	@INSTALL@ -m 755 -d $(DESTDIR)$(ULOGD_LIB_PATH)
++	@INSTALL@ -m 755 *.so $(DESTDIR)$(ULOGD_LIB_PATH)
+diff -ur ulogd-0.91.orig/mysql/Makefile.in ulogd-0.91/mysql/Makefile.in
+--- ulogd-0.91.orig/mysql/Makefile.in	Mon Nov 20 20:47:53 2000
++++ ulogd-0.91/mysql/Makefile.in	Wed Jan 31 00:38:15 2001
+@@ -24,5 +24,5 @@
+ 	rm -f Makefile
+ 
+ install: all
+-	@INSTALL@ -m 755 -d $(ULOGD_LIB_PATH)
+-	@INSTALL@ -m 755 *.so $(ULOGD_LIB_PATH)
++	@INSTALL@ -m 755 -d $(DESTDIR)$(ULOGD_LIB_PATH)
++	@INSTALL@ -m 755 *.so $(DESTDIR)$(ULOGD_LIB_PATH)
