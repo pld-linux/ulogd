@@ -1,7 +1,7 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Name:		ulogd
 Version:	0.95
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -17,6 +17,7 @@ BuildRequires:	sgmls
 BuildRequires:	mysql-devel
 #Requires:	kernel >= 2.4.0test9
 Requires:	iptables
+Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc
