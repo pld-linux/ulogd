@@ -56,7 +56,7 @@ Wtyczka MySQL dla ulogd.
 %patch0 -p1
 
 %build
-autoconf
+%{__autoconf}
 %configure \
 	--with-mysql
 %{__make}
