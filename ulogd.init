@@ -14,7 +14,7 @@
 [ -f /usr/sbin/ulogd ] || exit 0
 
 # Get service config
-if [ -f /etc/sysconfig/ulogd ] ; then
+if [ -f /etc/sysconfig/ulogd ]; then
 	. /etc/sysconfig/ulogd
 fi
 
