@@ -1,0 +1,5 @@
+/var/log/iptables.ulog {
+        postrotate
+		/etc/rc.d/init.d/ulogd reload >/dev/null 2>&1
+        endscript
+}
