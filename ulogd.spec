@@ -11,7 +11,6 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Source4:	%{name}.conf
 URL:		http://www.gnumonks.org/projects/ulogd
-Patch0:		%{name}-DESTDIR.patch
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
 #Requires:	kernel >= 2.4.0test9
@@ -52,7 +51,6 @@ Wtyczka MySQL dla ulogd.
 
 %prep
 %setup -q
-#%patch0 -p1
 
 %build
 %{__autoconf}
