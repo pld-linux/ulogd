@@ -52,7 +52,7 @@ mysql plugin for ulogd
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d}} \
+install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d}} \
 	$RPM_BUILD_ROOT/var/log
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
