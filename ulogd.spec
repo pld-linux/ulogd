@@ -11,9 +11,10 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Source4:	%{name}.conf
 Patch0:		%{name}-DESTDIR.patch
+BuildRequires:	autoconf
+BuildRequires:	mysql-devel
 BuildRequires:	sgml-tools
 BuildRequires:	sgmls
-BuildRequires:	mysql-devel
 #Requires:	kernel >= 2.4.0test9
 Requires:	iptables
 Prereq:		/sbin/chkconfig
@@ -55,6 +56,7 @@ Wtyczka MySQL dla ulogd.
 %patch0 -p1
 
 %build
+autoconf
 %configure \
 	--with-mysql
 %{__make}
