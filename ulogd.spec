@@ -102,7 +102,7 @@ fi
 %doc Changes doc/*.{ps,txt,html}
 %attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/sysconfig/ulogd
 %attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) %{_sysconfdir}/ulogd.conf
-%attr(640,root,root) /etc/logrotate.d/ulogd
+%attr(640,root,root) %config(noreplace) %verify(not mtime md5 size) /etc/logrotate.d/ulogd
 %attr(754,root,root) /etc/rc.d/init.d/ulogd
 
 %attr(755,root,root) %{_sbindir}/*
