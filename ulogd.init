@@ -2,7 +2,7 @@
 #
 # ulogd		Starts ulogd.
 #
-# chkconfig:	2345 91 91
+# chkconfig:	2345 9 91
 # description:	ulogd is the userland packect logger for iptables ULOG target.
 
 # Source function library
