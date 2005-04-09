@@ -78,6 +78,7 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d}}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
+install -D %{name}.8 $RPM_BUILD_ROOT/%{_mandir}/man8/%{name}.8
 
 touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
 
@@ -118,6 +119,7 @@ fi
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_[BLOPS]*.so
 
 %attr(640,root,root) %ghost /var/log/*
+%{_mandir}/man?/%{name}.*
 
 %files mysql
 %defattr(644,root,root,755)
