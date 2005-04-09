@@ -13,7 +13,6 @@ Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
-Source4:	%{name}.conf
 Patch0:		%{name}-includes.patch
 URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
@@ -79,7 +78,6 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d}}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
-install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}
 
 touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
 
