@@ -25,7 +25,7 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/ulogd ]; then
 		msg_starting ulogd
-		daemon ulogd
+		daemon ulogd -d
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ulogd
 	else
