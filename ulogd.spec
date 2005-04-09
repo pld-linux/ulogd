@@ -1,12 +1,12 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl):	Demon loguj±cy w trybie u¿ytkownika dla iptables
 Name:		ulogd
-Version:	1.21
+Version:	1.22
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
-# Source0-md5:	32e94a9336c10a4cb8ab3745bc2abbdb
+# Source0-md5:	2593dfc51c0bc1d8f86519fb13dd5f34
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
@@ -55,6 +55,11 @@ Wtyczka MySQL dla ulogd.
 %patch0 -p1
 
 %build
+%if "%{_lib}" != "lib"
+sed -e 's@lib/@%{_lib}/@g' -i configure.in
+sed -e 's@${MYSQLLIBS}@%{_libdir}@g' -i configure.in
+%endif
+
 %{__autoconf}
 %configure \
 	--with-mysql
