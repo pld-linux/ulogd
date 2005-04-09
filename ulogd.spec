@@ -1,3 +1,6 @@
+# TODO: (maybe ;)
+# - pgsql support
+# - sqlite support
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl):	Demon loguj±cy w trybie u¿ytkownika dla iptables
 Name:		ulogd
