@@ -20,23 +20,32 @@ fi
 
 RETVAL=0
 # See how we were called.
+CONFIGS=/etc/ulogd.conf
+if [ "${MULTIPLE}" == "YES" ]; then
+	CONFIGS="$CONFIGS /etc/ulogd/*.conf"
+fi
+
 case "$1" in
   start)
 	# Check if the service is already running?
-	if [ ! -f /var/lock/subsys/ulogd ]; then
-		msg_starting ulogd
-		daemon ulogd -d
-		RETVAL=$?
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ulogd
-	else
-		msg_already_running ulogd
-	fi
+	for i in $CONFIGS; do
+		bname=$(basename $i .conf)
+		if [ ! -f /var/lock/subsys/ulogd-$bname ]; then
+			msg_starting ulogd-$bname
+			daemon ulogd -d -c $i
+			RETVAL=$?
+			[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ulogd-$bname
+		else
+			msg_already_running ulogd-$bname
+		fi
+		touch /var/lock/subsys/ulogd
+	done
 	;;
   stop)
 	if [ -f /var/lock/subsys/ulogd ]; then
 		msg_stopping ulogd
 		killproc ulogd
-		rm -f /var/lock/subsys/ulogd >/dev/null 2>&1
+		rm -f /var/lock/subsys/ulogd* >/dev/null 2>&1
 	else
 		msg_not_running ulogd
 	fi
