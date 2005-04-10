@@ -5,7 +5,7 @@ Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl):	Demon loguj±cy w trybie u¿ytkownika dla iptables
 Name:		ulogd
 Version:	1.22
-Release:	1
+Release:	1.1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
@@ -69,7 +69,7 @@ sed -e 's@${MYSQLLIBS}@%{_libdir}@g' -i configure.in
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d}} \
+install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d,ulogd}} \
 	$RPM_BUILD_ROOT/var/log
 
 %{__make} install \
@@ -112,6 +112,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ulogd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ulogd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/ulogd
+%dir(750,root,root) %{_sysconfdir}/ulogd
 %attr(754,root,root) /etc/rc.d/init.d/ulogd
 
 %attr(755,root,root) %{_sbindir}/*
