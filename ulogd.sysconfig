@@ -1,2 +1,5 @@
 # Nice level for ulogd
 SERVICE_RUN_NICE_LEVEL="-1"
+
+# use "YES" when you want multiple ulog instantions in /etc/ulog/*.conf
+MULTIPLE="NO"
