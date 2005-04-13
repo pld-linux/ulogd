@@ -112,7 +112,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ulogd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ulogd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/ulogd
-%dir(750,root,root) %{_sysconfdir}/ulogd
+%attr(750,root,root) %dir %{_sysconfdir}/ulogd
 %attr(754,root,root) /etc/rc.d/init.d/ulogd
 
 %attr(755,root,root) %{_sbindir}/*
