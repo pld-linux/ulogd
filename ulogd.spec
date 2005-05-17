@@ -9,7 +9,7 @@ Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
-# Source0-md5:	2593dfc51c0bc1d8f86519fb13dd5f34
+# Source0-md5:	fa3dfcaacf31855626d5b731b04a077f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
