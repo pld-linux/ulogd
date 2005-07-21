@@ -17,6 +17,7 @@ Patch0:		%{name}-includes.patch
 URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
+BuildRequires:	sed >= 4.0
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires(post):	fileutils
