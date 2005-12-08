@@ -8,9 +8,6 @@
 # Source function library
 . /etc/rc.d/init.d/functions
 
-# Get network config
-. /etc/sysconfig/network
-
 [ -f /usr/sbin/ulogd ] || exit 0
 
 # Get service config
