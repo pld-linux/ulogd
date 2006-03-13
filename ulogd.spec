@@ -17,12 +17,13 @@ Patch0:		%{name}-includes.patch
 URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
-PreReq:		rc-scripts
-Requires(post,preun):	/sbin/chkconfig
 Requires(post):	fileutils
-#Requires:	kernel >= 2.4.0test9
+Requires(post,preun):	/sbin/chkconfig
 Requires:	iptables
+#Requires:	kernel >= 2.4.0test9
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -93,17 +94,11 @@ if [ ! -f /var/log/ulogd ]; then
 fi
 
 /sbin/chkconfig --add ulogd
-if [ -f /var/lock/subsys/ulogd ]; then
-	/etc/rc.d/init.d/ulogd restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/ulogd start\" to start ulogd daemon." 1>&2
-fi
+%service ulogd restart "ulogd daemon"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/ulogd ]; then
-		/etc/rc.d/init.d/ulogd stop 1>&2
-	fi
+	%service ulogd stop
 	/sbin/chkconfig --del ulogd
 fi
 
