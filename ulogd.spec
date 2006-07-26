@@ -80,7 +80,7 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d,u
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
-install -D %{name}.8 $RPM_BUILD_ROOT/%{_mandir}/man8/%{name}.8
+install -D %{name}.8 $RPM_BUILD_ROOT%{_mandir}/man8/%{name}.8
 
 touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
 
