@@ -2,7 +2,7 @@
 # - pgsql support
 # - sqlite support
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
-Summary(pl):	Demon loguj±cy w trybie u¿ytkownika dla iptables
+Summary(pl.UTF-8):   Demon logujÄ…cy w trybie uÅ¼ytkownika dla iptables
 Name:		ulogd
 Version:	1.24
 Release:	1
@@ -34,24 +34,24 @@ userspace to do some logging there. It should work like that:
   - send the packet out using netlink multicast facility
   - return NF_ACCEPT immediately.
 
-%description -l pl
-Ten pakiet ma s³u¿yæ do wysy³ania pakietów z j±dra do przestrzeni
-u¿ytkownika w celu logowania. Powinien dzia³aæ tak:
-- zarejestrowaæ w netfilterze cel o nazwie ULOG
-- je¿eli cel zosta³ osi±gniêty:
-  - wys³aæ pakiet poprzez netlink
-  - zwróciæ natychmiast NF_ACCEPT.
+%description -l pl.UTF-8
+Ten pakiet ma sÅ‚uÅ¼yÄ‡ do wysyÅ‚ania pakietÃ³w z jÄ…dra do przestrzeni
+uÅ¼ytkownika w celu logowania. Powinien dziaÅ‚aÄ‡ tak:
+- zarejestrowaÄ‡ w netfilterze cel o nazwie ULOG
+- jeÅ¼eli cel zostaÅ‚ osiÄ…gniÄ™ty:
+  - wysÅ‚aÄ‡ pakiet poprzez netlink
+  - zwrÃ³ciÄ‡ natychmiast NF_ACCEPT.
 
 %package mysql
 Summary:	MySQL plugin for ulogd
-Summary(pl):	Wtyczka MySQL dla ulogd
+Summary(pl.UTF-8):   Wtyczka MySQL dla ulogd
 Group:		Networking/Daemons
 Obsoletes:	iptables-ulogd-mysql
 
 %description mysql
 MySQL plugin for ulogd.
 
-%description mysql -l pl
+%description mysql -l pl.UTF-8
 Wtyczka MySQL dla ulogd.
 
 %prep
