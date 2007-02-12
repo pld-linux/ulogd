@@ -2,7 +2,7 @@
 # - pgsql support
 # - sqlite support
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
-Summary(pl.UTF-8):   Demon logujący w trybie użytkownika dla iptables
+Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
 Version:	1.24
 Release:	1
@@ -44,7 +44,7 @@ użytkownika w celu logowania. Powinien działać tak:
 
 %package mysql
 Summary:	MySQL plugin for ulogd
-Summary(pl.UTF-8):   Wtyczka MySQL dla ulogd
+Summary(pl.UTF-8):	Wtyczka MySQL dla ulogd
 Group:		Networking/Daemons
 Obsoletes:	iptables-ulogd-mysql
 
