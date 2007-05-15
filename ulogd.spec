@@ -1,6 +1,3 @@
-# TODO: (maybe ;)
-# - pgsql support
-# - sqlite support
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
@@ -14,9 +11,12 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
+Patch1:		%{name}-mysql.patch
 URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	mysql-devel
+BuildRequires:	postgresql-devel
+BuildRequires:	sqlite3-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
 Requires(post):	fileutils
@@ -54,9 +54,32 @@ MySQL plugin for ulogd.
 %description mysql -l pl.UTF-8
 Wtyczka MySQL dla ulogd.
 
+%package pgsql
+Summary:	PostgreSQL plugin for ulogd
+Summary(pl.UTF-8):	Wtyczka PostgreSQL dla ulogd
+Group:		Networking/Daemons
+
+%description pgsql
+PostgreSQL plugin for ulogd.
+
+%description pgsql -l pl.UTF-8
+Wtyczka PostgreSQL dla ulogd.
+
+%package sqlite
+Summary:	SQLite plugin for ulogd
+Summary(pl.UTF-8):	Wtyczka SQLite dla ulogd
+Group:		Networking/Daemons
+
+%description sqlite
+SQLite plugin for ulogd.
+
+%description sqlite -l pl.UTF-8
+Wtyczka SQLite dla ulogd.
+
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p0
 
 %build
 %if "%{_lib}" != "lib"
@@ -66,7 +89,9 @@ sed -e 's@${MYSQLLIBS}@%{_libdir}@g' -i configure.in
 
 %{__autoconf}
 %configure \
-	--with-mysql
+	--with-mysql \
+	--with-pgsql \
+	--with-sqlite3
 %{__make}
 
 %install
@@ -113,7 +138,9 @@ fi
 
 %attr(755,root,root) %{_sbindir}/*
 %dir %{_libdir}/ulogd
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_[BLOPS]*.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_[BLO]*.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_PWSNIFF*.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_SYSLOG*.so
 
 %attr(640,root,root) %ghost /var/log/*
 %{_mandir}/man?/%{name}.*
@@ -122,3 +149,13 @@ fi
 %defattr(644,root,root,755)
 %doc doc/mysql*
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_MYSQL.so
+
+%files pgsql
+%defattr(644,root,root,755)
+%doc doc/pgsql*
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_PGSQL.so
+
+%files sqlite
+%defattr(644,root,root,755)
+%doc doc/sqlite*
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_SQLITE3.so
