@@ -14,6 +14,7 @@ Patch0:		%{name}-includes.patch
 Patch1:		%{name}-mysql.patch
 URL:		http://gnumonks.org/projects/ulogd/
 BuildRequires:	autoconf
+BuildRequires:	libpcap-devel
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
 BuildRequires:	sqlite3-devel
@@ -139,6 +140,7 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 %dir %{_libdir}/ulogd
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_[BLO]*.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_PCAP*.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_PWSNIFF*.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_SYSLOG*.so
 
