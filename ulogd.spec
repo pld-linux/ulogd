@@ -93,14 +93,14 @@ sed -e 's@${MYSQLLIBS}@%{_libdir}@g' -i configure.in
 	--with-mysql \
 	--with-pgsql \
 	--with-sqlite3
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d,ulogd}} \
 	$RPM_BUILD_ROOT/var/log
 
-%{__make} install \
+%{__make} install -j1 \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
