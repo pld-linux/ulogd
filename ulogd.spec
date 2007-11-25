@@ -12,7 +12,7 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
 Patch1:		%{name}-mysql.patch
-URL:		http://gnumonks.org/projects/ulogd/
+URL:		http://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	libpcap-devel
 BuildRequires:	mysql-devel
