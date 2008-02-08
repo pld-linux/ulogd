@@ -85,7 +85,6 @@ Wtyczka SQLite dla ulogd.
 %build
 %if "%{_lib}" != "lib"
 sed -e 's@lib/@%{_lib}/@g' -i configure.in
-sed -e 's@${MYSQLLIBS}@%{_libdir}@g' -i configure.in
 %endif
 
 %{__autoconf}
