@@ -1,19 +1,23 @@
+%define		beta	beta3
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
-Version:	1.24
-Release:	1
+Version:	2.0.0
+Release:	0.%{beta}.1
 License:	GPL
 Group:		Networking/Daemons
-Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
-# Source0-md5:	05b4ed2926b9a22aaeaf642917bbf8ff
+Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}%{beta}.tar.bz2
+# Source0-md5:	be8137d3b7ae70ebbce7ca8852b9e901
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
-Patch1:		%{name}-mysql.patch
+Patch1:		%{name}-ac.patch
 URL:		http://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf
+BuildRequires:	libnfnetlink-devel >= 0.0.39
+BuildRequires:	libnetfilter_conntrack-devel >= 0.0.95
+BuildRequires:	libnetfilter_log-devel >= 0.0.15
 BuildRequires:	libpcap-devel
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
@@ -43,6 +47,17 @@ użytkownika w celu logowania. Powinien działać tak:
   - wysłać pakiet poprzez netlink
   - zwrócić natychmiast NF_ACCEPT.
 
+%package dbi
+Summary:	DBI plugin for ulogd
+Summary(pl.UTF-8):	Wtyczka DBI dla ulogd
+Group:		Networking/Daemons
+
+%description dbi
+DBI plugin for ulogd.
+
+%description dbi -l pl.UTF-8
+Wtyczka DBI dla ulogd.
+
 %package mysql
 Summary:	MySQL plugin for ulogd
 Summary(pl.UTF-8):	Wtyczka MySQL dla ulogd
@@ -54,6 +69,17 @@ MySQL plugin for ulogd.
 
 %description mysql -l pl.UTF-8
 Wtyczka MySQL dla ulogd.
+
+%package pcap
+Summary:	PCAP plugin for ulogd
+Summary(pl.UTF-8):	Wtyczka PCAP dla ulogd
+Group:		Networking/Daemons
+
+%description pcap
+PCAP plugin for ulogd.
+
+%description pcap -l pl.UTF-8
+Wtyczka PCAP dla ulogd.
 
 %package pgsql
 Summary:	PostgreSQL plugin for ulogd
@@ -78,18 +104,22 @@ SQLite plugin for ulogd.
 Wtyczka SQLite dla ulogd.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}%{beta}
 %patch0 -p1
 %patch1 -p0
 
 %build
-%if "%{_lib}" != "lib"
-sed -e 's@lib/@%{_lib}/@g' -i configure.in
-%endif
+#%if "%{_lib}" != "lib"
+#sed -e 's@lib/@%{_lib}/@g' -i configure.in
+#%endif
 
 %{__autoconf}
 %configure \
+	--with-dbi \
+	--with-dbi-lib=%{_libdir} \
 	--with-mysql \
+	--with-pcap \
+	--with-pcap-lib=%{_libdir} \
 	--with-pgsql \
 	--with-sqlite3
 %{__make} -j1
@@ -105,6 +135,7 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d,u
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
+install %{name}.conf $RPM_BUILD_ROOT/etc/%{name}.conf
 install -D %{name}.8 $RPM_BUILD_ROOT%{_mandir}/man8/%{name}.8
 
 touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
@@ -129,7 +160,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc Changes doc/*.{ps,txt,html}
+#%doc Changes doc/*.{ps,txt,html}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ulogd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ulogd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/ulogd
@@ -138,25 +169,46 @@ fi
 
 %attr(755,root,root) %{_sbindir}/*
 %dir %{_libdir}/ulogd
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_[BLO]*.so
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_PCAP*.so
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_PWSNIFF*.so
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_SYSLOG*.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_HWHDR.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IFINDEX.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IP2BIN.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IP2STR.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_MARK.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_PRINTFLOW.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_PRINTPKT.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_PWSNIFF.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_inpflow_NFCT.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_NFLOG.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_ULOG.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_IPFIX.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_LOGEMU.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_NACCT.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_OPRINT.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_SYSLOG.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_raw2packet_BASE.so
 
 %attr(640,root,root) %ghost /var/log/*
-%{_mandir}/man?/%{name}.*
+%{_mandir}/man8/%{name}.*
+
+%files dbi
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_DBI.so
 
 %files mysql
 %defattr(644,root,root,755)
 %doc doc/mysql*
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_MYSQL.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_MYSQL.so
+
+%files pcap
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_PCAP.so
 
 %files pgsql
 %defattr(644,root,root,755)
 %doc doc/pgsql*
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_PGSQL.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_PGSQL.so
 
 %files sqlite
 %defattr(644,root,root,755)
 %doc doc/sqlite*
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_SQLITE3.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_SQLITE3.so
