@@ -13,6 +13,7 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
 Patch1:		%{name}-ac.patch
+Patch2:		%{name}-git_fixes.patch
 URL:		http://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	libnfnetlink-devel >= 0.0.39
@@ -107,6 +108,7 @@ Wtyczka SQLite dla ulogd.
 %setup -q -n %{name}-%{version}%{beta}
 %patch0 -p1
 %patch1 -p0
+%patch2 -p1
 
 %build
 #%if "%{_lib}" != "lib"
