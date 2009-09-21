@@ -20,6 +20,7 @@ BuildRequires:	libnfnetlink-devel >= 0.0.39
 BuildRequires:	libnetfilter_conntrack-devel >= 0.0.95
 BuildRequires:	libnetfilter_log-devel >= 0.0.15
 BuildRequires:	libpcap-devel
+BuildRequires:	libdbi-devel
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
 BuildRequires:	sqlite3-devel
