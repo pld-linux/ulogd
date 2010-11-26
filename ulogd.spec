@@ -1,4 +1,4 @@
-%define		beta	beta3
+%define		beta	beta4
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
@@ -7,13 +7,12 @@ Release:	0.%{beta}.1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}%{beta}.tar.bz2
-# Source0-md5:	be8137d3b7ae70ebbce7ca8852b9e901
+# Source0-md5:	21143aecf8e39008d143a0fb0f742b0c
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
 Patch1:		%{name}-ac.patch
-Patch2:		%{name}-git_fixes.patch
 URL:		http://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	libnfnetlink-devel >= 0.0.39
@@ -109,7 +108,6 @@ Wtyczka SQLite dla ulogd.
 %setup -q -n %{name}-%{version}%{beta}
 %patch0 -p1
 %patch1 -p0
-%patch2 -p1
 
 %build
 #%if "%{_lib}" != "lib"
@@ -183,7 +181,6 @@ fi
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_inpflow_NFCT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_NFLOG.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_ULOG.so
-%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_IPFIX.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_LOGEMU.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_NACCT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_OPRINT.so
