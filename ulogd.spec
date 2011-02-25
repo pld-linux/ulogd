@@ -2,7 +2,7 @@ Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
 Version:	1.24
-Release:	3
+Release:	4
 License:	GPL
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
@@ -12,6 +12,7 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
 Patch1:		%{name}-mysql.patch
+Patch2:		%{name}-BASE.patch
 URL:		http://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf
 BuildRequires:	libpcap-devel
@@ -81,6 +82,7 @@ Wtyczka SQLite dla ulogd.
 %setup -q
 %patch0 -p1
 %patch1 -p0
+%patch2 -p0
 
 %build
 %if "%{_lib}" != "lib"
