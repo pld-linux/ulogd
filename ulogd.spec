@@ -34,7 +34,7 @@ userspace to do some logging there. It should work like that:
 - register a target called ULOG with netfilter
 - if the target is hit:
   - send the packet out using netlink multicast facility
-  - return NF_ACCEPT immediately.
+  - return NF_CONTINUE immediately.
 
 %description -l pl.UTF-8
 Ten pakiet ma służyć do wysyłania pakietów z jądra do przestrzeni
@@ -42,7 +42,7 @@ użytkownika w celu logowania. Powinien działać tak:
 - zarejestrować w netfilterze cel o nazwie ULOG
 - jeżeli cel został osiągnięty:
   - wysłać pakiet poprzez netlink
-  - zwrócić natychmiast NF_ACCEPT.
+  - zwrócić natychmiast NF_CONTINUE.
 
 %package mysql
 Summary:	MySQL plugin for ulogd
