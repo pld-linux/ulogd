@@ -3,11 +3,11 @@ Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
 Version:	2.0.0
-Release:	0.%{beta}.1
+Release:	0.1
 License:	GPL
 Group:		Networking/Daemons
-Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}%{beta}.tar.bz2
-# Source0-md5:	21143aecf8e39008d143a0fb0f742b0c
+Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
+# Source0-md5:	211e68781e3860959606fc94b97cf22e
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
@@ -15,16 +15,17 @@ Patch0:		%{name}-includes.patch
 Patch1:		%{name}-ac.patch
 URL:		http://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf
-BuildRequires:	libnfnetlink-devel >= 0.0.39
+BuildRequires:	libdbi-devel
+BuildRequires:	libnetfilter_acct-devel >= 1.0.0
 BuildRequires:	libnetfilter_conntrack-devel >= 0.0.95
 BuildRequires:	libnetfilter_log-devel >= 0.0.15
+BuildRequires:	libnfnetlink-devel >= 0.0.39
 BuildRequires:	libpcap-devel
-BuildRequires:	libdbi-devel
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
-BuildRequires:	sqlite3-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
+BuildRequires:	sqlite3-devel
 Requires(post):	fileutils
 Requires(post,preun):	/sbin/chkconfig
 Requires:	iptables
@@ -47,6 +48,18 @@ użytkownika w celu logowania. Powinien działać tak:
 - jeżeli cel został osiągnięty:
   - wysłać pakiet poprzez netlink
   - zwrócić natychmiast NF_ACCEPT.
+
+%package devel
+Summary:	Header files for %{name}
+Summary(pl.UTF-8):	Pliki nagłówkowe %{name}
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description devel
+Header files for %{name}.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe %{name}.
 
 %package dbi
 Summary:	DBI plugin for ulogd
@@ -105,7 +118,7 @@ SQLite plugin for ulogd.
 Wtyczka SQLite dla ulogd.
 
 %prep
-%setup -q -n %{name}-%{version}%{beta}
+%setup -q
 %patch0 -p1
 %patch1 -p0
 
@@ -119,10 +132,7 @@ Wtyczka SQLite dla ulogd.
 	--with-dbi \
 	--with-dbi-lib=%{_libdir} \
 	--with-mysql \
-	--with-pcap \
-	--with-pcap-lib=%{_libdir} \
-	--with-pgsql \
-	--with-sqlite3
+	--with-pgsql
 %{__make} -j1
 
 %install
@@ -173,22 +183,31 @@ fi
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_HWHDR.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IFINDEX.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IP2BIN.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IP2HBIN.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IP2STR.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_MARK.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_PRINTFLOW.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_PRINTPKT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_PWSNIFF.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_inpflow_NFACCT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_inpflow_NFCT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_NFLOG.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_ULOG.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_UNIXSOCK.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_GPRINT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_LOGEMU.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_NACCT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_OPRINT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_SYSLOG.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_XML.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_raw2packet_BASE.so
 
 %attr(640,root,root) %ghost /var/log/*
 %{_mandir}/man8/%{name}.*
+
+%files devel
+%defattr(644,root,root,755)
+%{_libdir}/ulogd/*.la
 
 %files dbi
 %defattr(644,root,root,755)
