@@ -1,10 +1,9 @@
-%define		beta	beta4
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
 Version:	2.0.0
 Release:	0.1
-License:	GPL
+License:	GPL v2+
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
 # Source0-md5:	211e68781e3860959606fc94b97cf22e
@@ -14,22 +13,29 @@ Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
 Patch1:		%{name}-ac.patch
 URL:		http://netfilter.org/projects/ulogd/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.50
+BuildRequires:	automake >= 1:1.11
 BuildRequires:	libdbi-devel
+BuildRequires:	libmnl-devel >= 1.0.0
 BuildRequires:	libnetfilter_acct-devel >= 1.0.0
-BuildRequires:	libnetfilter_conntrack-devel >= 0.0.95
-BuildRequires:	libnetfilter_log-devel >= 0.0.15
-BuildRequires:	libnfnetlink-devel >= 0.0.39
+BuildRequires:	libnetfilter_conntrack-devel >= 1.0.0
+BuildRequires:	libnetfilter_log-devel >= 1.0.0
+BuildRequires:	libnfnetlink-devel >= 1.0.0
 BuildRequires:	libpcap-devel
+BuildRequires:	libtool
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
-BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel
+BuildRequires:	sgml-tools
+BuildRequires:	sqlite3-devel >= 3
 Requires(post):	fileutils
 Requires(post,preun):	/sbin/chkconfig
 Requires:	iptables
-#Requires:	kernel >= 2.4.0test9
+Requires:	libmnl >= 1.0.0
+Requires:	libnetfilter_acct >= 1.0.0
+Requires:	libnetfilter_conntrack >= 1.0.0
+Requires:	libnetfilter_log >= 1.0.0
+Requires:	libnfnetlink >= 1.0.0
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -49,22 +55,11 @@ użytkownika w celu logowania. Powinien działać tak:
   - wysłać pakiet poprzez netlink
   - zwrócić natychmiast NF_CONTINUE.
 
-%package devel
-Summary:	Header files for %{name}
-Summary(pl.UTF-8):	Pliki nagłówkowe %{name}
-Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description devel
-Header files for %{name}.
-
-%description devel -l pl.UTF-8
-Pliki nagłówkowe %{name}.
-
 %package dbi
 Summary:	DBI plugin for ulogd
 Summary(pl.UTF-8):	Wtyczka DBI dla ulogd
 Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
 
 %description dbi
 DBI plugin for ulogd.
@@ -77,6 +72,7 @@ Summary:	MySQL plugin for ulogd
 Summary(pl.UTF-8):	Wtyczka MySQL dla ulogd
 Group:		Networking/Daemons
 Obsoletes:	iptables-ulogd-mysql
+Requires:	%{name} = %{version}-%{release}
 
 %description mysql
 MySQL plugin for ulogd.
@@ -88,6 +84,7 @@ Wtyczka MySQL dla ulogd.
 Summary:	PCAP plugin for ulogd
 Summary(pl.UTF-8):	Wtyczka PCAP dla ulogd
 Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
 
 %description pcap
 PCAP plugin for ulogd.
@@ -99,6 +96,7 @@ Wtyczka PCAP dla ulogd.
 Summary:	PostgreSQL plugin for ulogd
 Summary(pl.UTF-8):	Wtyczka PostgreSQL dla ulogd
 Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
 
 %description pgsql
 PostgreSQL plugin for ulogd.
@@ -110,6 +108,7 @@ Wtyczka PostgreSQL dla ulogd.
 Summary:	SQLite plugin for ulogd
 Summary(pl.UTF-8):	Wtyczka SQLite dla ulogd
 Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
 
 %description sqlite
 SQLite plugin for ulogd.
@@ -123,17 +122,21 @@ Wtyczka SQLite dla ulogd.
 %patch1 -p0
 
 %build
-#%if "%{_lib}" != "lib"
-#sed -e 's@lib/@%{_lib}/@g' -i configure.in
-#%endif
-
+%{__libtoolize}
+%{__aclocal}
 %{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
+	--disable-silent-rules \
 	--with-dbi \
 	--with-dbi-lib=%{_libdir} \
 	--with-mysql \
 	--with-pgsql
 %{__make} -j1
+
+cd doc
+sgml2html -s 0 ulogd.sgml
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -147,7 +150,8 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/ulogd
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/ulogd
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/ulogd
 install %{name}.conf $RPM_BUILD_ROOT/etc/%{name}.conf
-install -D %{name}.8 $RPM_BUILD_ROOT%{_mandir}/man8/%{name}.8
+
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/ulogd/*.la
 
 touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
 
@@ -171,14 +175,14 @@ fi
 
 %files
 %defattr(644,root,root,755)
-#%doc Changes doc/*.{ps,txt,html}
+%doc AUTHORS README TODO doc/ulogd.html
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/ulogd
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ulogd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/ulogd
 %attr(750,root,root) %dir %{_sysconfdir}/ulogd
 %attr(754,root,root) /etc/rc.d/init.d/ulogd
 
-%attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_sbindir}/ulogd
 %dir %{_libdir}/ulogd
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_HWHDR.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_filter_IFINDEX.so
@@ -202,12 +206,9 @@ fi
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_XML.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_raw2packet_BASE.so
 
-%attr(640,root,root) %ghost /var/log/*
-%{_mandir}/man8/%{name}.*
-
-%files devel
-%defattr(644,root,root,755)
-%{_libdir}/ulogd/*.la
+%attr(640,root,root) %ghost /var/log/ulogd
+%attr(640,root,root) %ghost /var/log/ulogd.pktlog
+%{_mandir}/man8/ulogd.8*
 
 %files dbi
 %defattr(644,root,root,755)
@@ -215,7 +216,7 @@ fi
 
 %files mysql
 %defattr(644,root,root,755)
-%doc doc/mysql*
+%doc doc/mysql*.sql
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_MYSQL.so
 
 %files pcap
@@ -224,10 +225,10 @@ fi
 
 %files pgsql
 %defattr(644,root,root,755)
-%doc doc/pgsql*
+%doc doc/pgsql*.sql
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_PGSQL.so
 
 %files sqlite
 %defattr(644,root,root,755)
-%doc doc/sqlite*
+%doc doc/sqlite3.table
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_SQLITE3.so
