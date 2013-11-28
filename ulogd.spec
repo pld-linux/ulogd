@@ -1,12 +1,12 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
-Version:	2.0.2
+Version:	2.0.3
 Release:	1
 License:	GPL v2+
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
-# Source0-md5:	660516de4b5b1e110c12dae414619e0f
+# Source0-md5:	4dcd7e7a68022318759b8d3b9fff7519
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
