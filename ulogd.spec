@@ -1,12 +1,12 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
-Version:	2.0.3
+Version:	2.0.4
 Release:	1
 License:	GPL v2+
 Group:		Networking/Daemons
 Source0:	ftp://ftp.netfilter.org/pub/ulogd/%{name}-%{version}.tar.bz2
-# Source0-md5:	4dcd7e7a68022318759b8d3b9fff7519
+# Source0-md5:	7c71ec460dfea5287eba27472c521ebc
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
@@ -15,6 +15,7 @@ Patch1:		%{name}-ac.patch
 URL:		http://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.11
+BuildRequires:	jansson-devel
 BuildRequires:	libdbi-devel
 BuildRequires:	libmnl-devel >= 1.0.3
 BuildRequires:	libnetfilter_acct-devel >= 1.0.1
@@ -66,6 +67,18 @@ DBI plugin for ulogd.
 
 %description dbi -l pl.UTF-8
 Wtyczka DBI dla ulogd.
+
+%package json
+Summary:	JSON plugin for ulogd
+Summary(pl.UTF-8):	Wtyczka JSON dla ulogd
+Group:		Networking/Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description json
+JSON plugin for ulogd.
+
+%description json -l pl.UTF-8
+Wtyczka JSON dla ulogd.
 
 %package mysql
 Summary:	MySQL plugin for ulogd
@@ -214,6 +227,10 @@ fi
 %files dbi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_DBI.so
+
+%files json
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_JSON.so
 
 %files mysql
 %defattr(644,root,root,755)
