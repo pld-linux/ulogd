@@ -2,7 +2,7 @@ Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
 Version:	2.0.7
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Networking/Daemons
 Source0:	https://netfilter.org/projects/ulogd/files/%{name}-%{version}.tar.bz2
@@ -12,6 +12,9 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Patch0:		%{name}-includes.patch
 Patch1:		%{name}-ac.patch
+Patch2:		configure-logging.patch
+Patch3:		enable-nflog-by-default.patch
+Patch4:		put-logfiles-in-var-log-ulog.patch
 URL:		https://netfilter.org/projects/ulogd/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.11
@@ -133,6 +136,9 @@ Wtyczka SQLite dla ulogd.
 %setup -q
 %patch0 -p1
 %patch1 -p0
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 %{__libtoolize}
@@ -154,7 +160,7 @@ sgml2html -s 0 ulogd.sgml
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{sysconfig,logrotate.d,rc.d/init.d,ulogd}} \
-	$RPM_BUILD_ROOT/var/log
+	$RPM_BUILD_ROOT/var/log/ulog
 
 %{__make} install -j1 \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -166,17 +172,12 @@ install %{name}.conf $RPM_BUILD_ROOT/etc/%{name}.conf
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/ulogd/*.la
 
-touch $RPM_BUILD_ROOT/var/log/ulogd{,.pktlog}
+touch $RPM_BUILD_ROOT/var/log/ulog/ulogd{,.pktlog}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ ! -f /var/log/ulogd ]; then
-	touch /var/log/ulogd{,.pktlog}
-	chmod 640 /var/log/ulogd{,.pktlog}
-fi
-
 /sbin/chkconfig --add ulogd
 %service ulogd restart "ulogd daemon"
 
@@ -220,8 +221,9 @@ fi
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_XML.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_raw2packet_BASE.so
 
-%attr(640,root,root) %ghost /var/log/ulogd
-%attr(640,root,root) %ghost /var/log/ulogd.pktlog
+%attr(640,root,root) %dir /var/log/ulog
+%attr(640,root,root) %ghost /var/log/ulog/ulogd
+%attr(640,root,root) %ghost /var/log/ulog/ulogd.pktlog
 %{_mandir}/man8/ulogd.8*
 
 %files dbi

@@ -1,0 +1,72 @@
+Description: Update logfile paths to log to /var/log/ulog/*
+ The standard configuration file sends logs to a number of files under
+ /var/log/. To keep things tidy, including the logrotate script, move all the
+ logs into a common parent directory.
+Forwarded: not-needed
+Author: Chris Boot <bootc@debian.org>
+Last-Update: 2013-04-27
+
+--- a/ulogd.conf.in
++++ b/ulogd.conf.in
+@@ -184,25 +184,25 @@
+ socket_path="/tmp/nuauth_ulogd2.sock"
+ 
+ [emu1]
+-file="/var/log/ulogd_syslogemu.log"
++file="/var/log/ulog/syslogemu.log"
+ sync=1
+ 
+ [op1]
+-file="/var/log/ulogd_oprint.log"
++file="/var/log/ulog/oprint.log"
+ sync=1
+ 
+ [gp1]
+-file="/var/log/ulogd_gprint.log"
++file="/var/log/ulog/gprint.log"
+ sync=1
+ timestamp=1
+ 
+ [xml1]
+-directory="/var/log/"
++directory="/var/log/ulog/"
+ sync=1
+ 
+ [json1]
+ sync=1
+-#file="/var/log/ulogd.json"
++#file="/var/log/ulog/ulogd.json"
+ #timestamp=0
+ # device name to be used in JSON message
+ #device="My awesome Netfilter firewall"
+@@ -216,7 +216,7 @@
+ 
+ [pcap1]
+ #default file is /var/log/ulogd.pcap
+-#file="/var/log/ulogd.pcap"
++#file="/var/log/ulog/ulogd.pcap"
+ sync=1
+ 
+ [mysql1]
+@@ -301,18 +301,18 @@
+ 
+ [sqlite3_ct]
+ table="ulog_ct"
+-db="/var/log/ulogd.sqlite3db"
++db="/var/log/ulog/ulogd.sqlite3db"
+ 
+ [sqlite3_pkt]
+ table="ulog_pkt"
+-db="/var/log/ulogd.sqlite3db"
++db="/var/log/ulog/ulogd.sqlite3db"
+ 
+ [sys2]
+ facility=LOG_LOCAL2
+ 
+ [nacct1]
+ sync = 1
+-#file = /var/log/ulogd_nacct.log
++#file = /var/log/ulog/nacct.log
+ 
+ [mark1]
+ mark = 1

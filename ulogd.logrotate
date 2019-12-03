@@ -1,4 +1,6 @@
-/var/log/ulogd* {
+/var/log/ulog/*.* {
+        olddir /var/log/archive/ulog
+        sharedscripts
         postrotate
 		/etc/rc.d/init.d/ulogd reload >/dev/null 2>&1
         endscript
