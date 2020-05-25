@@ -51,6 +51,16 @@ case "$1" in
 	status ulogd
 	exit $?
 	;;
+  reload)
+        if [ ! -f /var/lock/subsys/ulogd ]; then
+	  msg_not_running "ulogd"
+	  exit 7
+	fi
+
+	msg_reloading "ulogd"
+	killproc ulogd -HUP
+	exit $?
+	;;
   restart|force-reload)
 	$0 stop
 	$0 start
