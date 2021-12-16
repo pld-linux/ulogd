@@ -29,9 +29,10 @@ case "$1" in
 		bname=$(basename $i .conf)
 		if [ ! -f /var/lock/subsys/ulogd-$bname ]; then
 			msg_starting ulogd-$bname
-			daemon ulogd -d -c $i
-			RETVAL=$?
-			[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ulogd-$bname
+			daemon ulogd -d -p /var/run/ulogd-$bname.pid -c $i
+			RETVAL_LOCAL=$?
+			RETVAL=$(($RETVAL+$RETVAL_LOCAL))
+			[ $RETVAL_LOCAL -eq 0 ] && touch /var/lock/subsys/ulogd-$bname
 		else
 			msg_already_running ulogd-$bname
 		fi
@@ -40,15 +41,23 @@ case "$1" in
 	;;
   stop)
 	if [ -f /var/lock/subsys/ulogd ]; then
-		msg_stopping ulogd
-		killproc ulogd
-		rm -f /var/lock/subsys/ulogd* >/dev/null 2>&1
+		for i in $CONFIGS; do
+			bname=$(basename $i .conf)
+			msg_stopping ulogd-$bname
+			killproc -p /var/run/ulogd-$bname.pid ulogd
+			RETVAL=$(($RETVAL+$?))
+			rm -f /var/lock/subsys/ulogd-$bname 2>&1
+		done
+		rm -f /var/lock/subsys/ulogd >/dev/null 2>&1
 	else
 		msg_not_running ulogd
 	fi
 	;;
   status)
-	status ulogd
+		for i in $CONFIGS; do
+			bname=$(basename $i .conf)
+			status -p /var/run/ulogd-$bname.pid ulogd-$bname ulogd
+		done
 	exit $?
 	;;
   reload)
