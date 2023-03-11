@@ -1,17 +1,15 @@
 Summary:	ULOGD - the Userspace Logging Daemon for iptables
 Summary(pl.UTF-8):	Demon logujący w trybie użytkownika dla iptables
 Name:		ulogd
-Version:	2.0.7
-Release:	5
+Version:	2.0.8
+Release:	1
 License:	GPL v2+
 Group:		Networking/Daemons
 Source0:	https://netfilter.org/projects/ulogd/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	2bb2868cf51acbb90c35763c9f995f31
+# Source0-md5:	9f69597b37bfaf3ae63426529dd1fb5d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
-Patch0:		%{name}-includes.patch
-Patch1:		%{name}-ac.patch
 Patch2:		configure-logging.patch
 Patch3:		enable-nflog-by-default.patch
 Patch4:		put-logfiles-in-var-log-ulog.patch
@@ -23,10 +21,10 @@ BuildRequires:	libdbi-devel
 BuildRequires:	libmnl-devel >= 1.0.3
 BuildRequires:	libnetfilter_acct-devel >= 1.0.1
 BuildRequires:	libnetfilter_conntrack-devel >= 1.0.2
-BuildRequires:	libnetfilter_log-devel >= 1.0.0
+BuildRequires:	libnetfilter_log-devel >= 1.0.2
 BuildRequires:	libnfnetlink-devel >= 1.0.1
 BuildRequires:	libpcap-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -38,7 +36,7 @@ Requires:	iptables
 Requires:	libmnl >= 1.0.3
 Requires:	libnetfilter_acct >= 1.0.1
 Requires:	libnetfilter_conntrack >= 1.0.2
-Requires:	libnetfilter_log >= 1.0.0
+Requires:	libnetfilter_log >= 1.0.2
 Requires:	libnfnetlink >= 1.0.1
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -87,8 +85,8 @@ Wtyczka JSON dla ulogd.
 Summary:	MySQL plugin for ulogd
 Summary(pl.UTF-8):	Wtyczka MySQL dla ulogd
 Group:		Networking/Daemons
-Obsoletes:	iptables-ulogd-mysql
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	iptables-ulogd-mysql < 1.2-2
 
 %description mysql
 MySQL plugin for ulogd.
@@ -134,8 +132,6 @@ Wtyczka SQLite dla ulogd.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p0
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
@@ -214,6 +210,7 @@ fi
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_inppkt_UNIXSOCK.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_GPRINT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_GRAPHITE.so
+%attr(755,root,root) %{_libdir}/ulogd/ulogd_output_IPFIX.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_LOGEMU.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_NACCT.so
 %attr(755,root,root) %{_libdir}/ulogd/ulogd_output_OPRINT.so
